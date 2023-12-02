@@ -9,6 +9,7 @@ import (
 	"web-calculator/model"
 
 	"github.com/glebarez/sqlite"
+	"gorm.io/driver/postgres"
 	"gorm.io/gorm"
 )
 
@@ -21,26 +22,54 @@ type App struct {
 func New() *App {
 
 	// determine db file
-	var db_file string
+	var database *gorm.DB
 	if os.Getenv("APP_STATE") == "docker" {
-		db_file = "/var/lib/web-calculator/calculator.sqlite"
-	} else {
-		db_file = "calculator.sqlite"
-	}
+		db_file := "/var/lib/web-calculator/calculator.sqlite"
 
-	// initialise db connection
-	db, err := gorm.Open(sqlite.Open(db_file), &gorm.Config{})
-	if err != nil {
-		err_msg := fmt.Sprintf("failed to connect database: %s", err.Error())
-		panic(err_msg)
+		// initialise db connection
+		db, err := gorm.Open(sqlite.Open(db_file), &gorm.Config{})
+		if err != nil {
+			err_msg := fmt.Sprintf("failed to connect database: %s", err.Error())
+			panic(err_msg)
+		}
+		database = db
+	} else if os.Getenv("APP_STATE") == "cluster" {
+
+		// postgres vars
+		host := "postgres-db-postgresql.default.svc.cluster.local"
+		dbname := "postgres"
+		port := "5432"
+		user := "postgres"
+		password := os.Getenv("POSTGRES_PASSWORD")
+
+		dsn := fmt.Sprintf("host=%s port=%s user=%s password=%s dbname=%s sslmode=disable", host, port, user, password, dbname)
+
+		// initialise db connection
+		db, err := gorm.Open(postgres.Open(dsn), &gorm.Config{})
+		if err != nil {
+			err_msg := fmt.Sprintf("failed to connect database: %s", err.Error())
+			panic(err_msg)
+		}
+		database = db
+
+	} else {
+		db_file := "calculator.sqlite"
+
+		// initialise db connection
+		db, err := gorm.Open(sqlite.Open(db_file), &gorm.Config{})
+		if err != nil {
+			err_msg := fmt.Sprintf("failed to connect database: %s", err.Error())
+			panic(err_msg)
+		}
+		database = db
 	}
 
 	// migrate db
-	db.AutoMigrate(&model.EquationModel{})
+	database.AutoMigrate(&model.EquationModel{})
 
 	// construct app
 	app := &App{
-		db: db,
+		db: database,
 	}
 
 	// load routes
