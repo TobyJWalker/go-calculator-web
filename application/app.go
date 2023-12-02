@@ -22,9 +22,9 @@ func New() *App {
 	// determine db file
 	var db_file string
 	if os.Getenv("APP_STATE") == "production" {
-		db_file = "/var/lib/web-calculator/calculator.db"
+		db_file = "/var/lib/web-calculator/calculator.sqlite"
 	} else {
-		db_file = "calculator.db"
+		db_file = "calculator.sqlite"
 	}
 
 	// initialise db connection
