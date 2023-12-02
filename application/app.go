@@ -5,15 +5,30 @@ import (
 	"fmt"
 	"net/http"
 	"time"
+
+	"github.com/glebarez/sqlite"
+	"gorm.io/gorm"
 )
 
 type App struct {
 	router http.Handler
+	db *gorm.DB
 }
 
 // constructor
 func New() *App {
-	app := &App{}
+
+	// initialise db connection
+	db, err := gorm.Open(sqlite.Open("/var/lib/calculator.db"), &gorm.Config{})
+	if err != nil {
+		err_msg := fmt.Sprintf("failed to connect database: %s", err.Error())
+		panic(err_msg)
+	}
+
+	// construct app
+	app := &App{
+		db: db,
+	}
 
 	// load routes
 	app.loadRoutes()
