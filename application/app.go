@@ -4,6 +4,7 @@ import (
 	"context"
 	"fmt"
 	"net/http"
+	"os"
 	"time"
 
 	"github.com/glebarez/sqlite"
@@ -18,8 +19,16 @@ type App struct {
 // constructor
 func New() *App {
 
+	// determine db file
+	var db_file string
+	if os.Getenv("APP_STATE") == "production" {
+		db_file = "/var/lib/calculator.db"
+	} else {
+		db_file = "calculator.db"
+	}
+
 	// initialise db connection
-	db, err := gorm.Open(sqlite.Open("/var/lib/calculator.db"), &gorm.Config{})
+	db, err := gorm.Open(sqlite.Open(db_file), &gorm.Config{})
 	if err != nil {
 		err_msg := fmt.Sprintf("failed to connect database: %s", err.Error())
 		panic(err_msg)
