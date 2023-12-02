@@ -2,7 +2,6 @@ package handler
 
 import (
 	"encoding/json"
-	"fmt"
 	"net/http"
 
 	"web-calculator/calculator"
@@ -61,7 +60,23 @@ func (h *EquationHandler) ProcessEquation(w http.ResponseWriter, r *http.Request
 		return
 	}
 
+	// create a response
+	type response struct {
+		Equation string `json:"equation"`
+		Result float64 `json:"result"`
+	}
+
+	// marshal to json
+	res, err := json.Marshal(&response{
+		Equation: body.Equation,
+		Result: result,
+	}); if err != nil {
+		w.WriteHeader(http.StatusInternalServerError)
+		return
+	}
+
 	// return result
-	w.Write([]byte(fmt.Sprintf("%f", result)))
+	w.WriteHeader(http.StatusOK)
+	w.Write(res)
 
 }
