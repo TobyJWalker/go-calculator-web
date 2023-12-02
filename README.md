@@ -1,6 +1,14 @@
 # go-calculator-web
 Go calculator converted to a simple API. You can make POST requests to the API with a maths expression in the body and it will return the result. This project is to keep practicing Go and to learn how to make a simple API in Go. It will also save the maths expression and result to a database.
 
+I will also experiment with building a Kubernetes cluster and separating the app into microservices. The microservices will include:
+
+- Postgres database
+- API
+- Basic Frontend
+
+Frontend will be a simple HTML page with a form to submit the maths expression. The API will be responsible for handling the request and sending it to the database. The database will be responsible for storing the maths expression and result. The API will then return the result to the frontend. It can be found here: (TBD)
+
 ## How to run
 
 There are a few options to run this app. The first is to run it directly with Go. This can be done by running the following command in the root directory of the project:
