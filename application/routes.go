@@ -27,10 +27,10 @@ func (a *App) loadRoutes() {
 func (a *App) indexRoute(router chi.Router) {
 
 	// create handler function
-	handler := func(w http.ResponseWriter, r *http.Request) {
+	getHandler := func(w http.ResponseWriter, r *http.Request) {
 		w.Write([]byte("Hello World"))
 	}
 
 	// add handler to router
-	router.Get("/", handler)
+	router.Get("/", getHandler)
 }
