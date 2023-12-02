@@ -25,3 +25,6 @@ go.work
 
 # binary folder
 bin/
+
+# kubernetes folder
+kubernetes/
