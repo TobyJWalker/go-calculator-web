@@ -22,7 +22,7 @@ func New() *App {
 
 	// determine db file
 	var db_file string
-	if os.Getenv("APP_STATE") == "production" {
+	if os.Getenv("APP_STATE") == "docker" {
 		db_file = "/var/lib/web-calculator/calculator.sqlite"
 	} else {
 		db_file = "calculator.sqlite"

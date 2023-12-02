@@ -9,7 +9,7 @@ services:
     volumes:
       - db:/var/lib/web-calculator/
     environment:
-      - APP_STATE=production
+      - APP_STATE=docker
 
 volumes:
   db:
