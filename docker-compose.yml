@@ -1,0 +1,15 @@
+version: '3.8'
+
+services:
+  web:
+    build: .
+    container_name: web-calculator
+    ports:
+      - "8082:8082"
+    volumes:
+      - db:/var/lib/web-calculator/
+    environment:
+      - APP_STATE=production
+
+volumes:
+  db:
