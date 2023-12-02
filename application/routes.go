@@ -7,6 +7,7 @@ import (
 	"github.com/go-chi/chi/v5/middleware"
 
 	"web-calculator/handler"
+	"web-calculator/logger"
 )
 
 // load routes handler
@@ -43,7 +44,11 @@ func (a *App) indexRoute(router chi.Router) {
 func (a *App) equationRoute(router chi.Router) {
 
 	// create handler function
-	eqHandler := &handler.EquationHandler{}
+	eqHandler := &handler.EquationHandler{
+		Logger: &logger.Logger{
+			Client: a.db,
+		},
+	}
 
 	// add handler to router
 	router.Post("/", eqHandler.ProcessEquation)
