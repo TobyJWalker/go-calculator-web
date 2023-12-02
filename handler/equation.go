@@ -6,9 +6,12 @@ import (
 	"net/http"
 
 	"web-calculator/calculator"
+	"web-calculator/logger"
 )
 
-type EquationHandler struct {}
+type EquationHandler struct {
+	Logger *logger.Logger
+}
 
 // handle equation
 func (h *EquationHandler) ProcessEquation(w http.ResponseWriter, r *http.Request) {
@@ -50,6 +53,12 @@ func (h *EquationHandler) ProcessEquation(w http.ResponseWriter, r *http.Request
 
 	case "/" :
 		result = eq.Num1 / eq.Num2
+	}
+
+	// log equation
+	err = h.Logger.Log(r.Context(), body.Equation, result); if err != nil {
+		w.WriteHeader(http.StatusInternalServerError)
+		return
 	}
 
 	// return result
