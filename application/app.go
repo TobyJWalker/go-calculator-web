@@ -6,6 +6,7 @@ import (
 	"net/http"
 	"os"
 	"time"
+	"web-calculator/model"
 
 	"github.com/glebarez/sqlite"
 	"gorm.io/gorm"
@@ -33,6 +34,9 @@ func New() *App {
 		err_msg := fmt.Sprintf("failed to connect database: %s", err.Error())
 		panic(err_msg)
 	}
+
+	// migrate db
+	db.AutoMigrate(&model.EquationModel{})
 
 	// construct app
 	app := &App{
