@@ -1,10 +1,15 @@
 package model
 
-import "time"
+import (
+	"time"
+
+	"gorm.io/gorm"
+)
 
 // equation model
 type EquationModel struct {
+	gorm.Model
 	Equation string `json:"equation"`
-	Result string `json:"result"`
+	Result float64 `json:"result"`
 	CalculatedAt *time.Time `json:"calculated_at"`
 }
