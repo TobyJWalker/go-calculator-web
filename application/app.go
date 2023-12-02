@@ -22,7 +22,7 @@ func New() *App {
 	// determine db file
 	var db_file string
 	if os.Getenv("APP_STATE") == "production" {
-		db_file = "/var/lib/calculator.db"
+		db_file = "/var/lib/web-calculator/calculator.db"
 	} else {
 		db_file = "calculator.db"
 	}
