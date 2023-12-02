@@ -22,3 +22,6 @@ go.work
 
 # db file
 *.sqlite
+
+# binary folder
+bin/
